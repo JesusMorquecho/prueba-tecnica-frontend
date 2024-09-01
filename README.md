@@ -1,27 +1,70 @@
 # PruebaTecnica
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.4.
+# Proyecto de Angular: Aplicación de Películas
 
-## Development server
+Esta es una aplicación Angular para visualizar una lista de películas obtenidas desde una API. La aplicación permite mostrar y gestionar información sobre películas y sus directores.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## scripts: Bases de datos:
+CREATE DATABASE MoviesDB;
+GO
 
-## Code scaffolding
+USE MoviesDB;
+GO
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+CREATE TABLE Director (
+    Id INT PRIMARY KEY IDENTITY(1,1), 
+    Name VARCHAR(200) NOT NULL,
+    Nationality VARCHAR(100),
+    Age INT,
+    Active BIT
+);
+GO
 
-## Build
+CREATE TABLE Movies (
+    Id INT PRIMARY KEY IDENTITY(1,1), 
+    Name VARCHAR(100) NOT NULL,
+    ReleaseYear DATE,
+    Gender VARCHAR(50),
+    Duration TIME,
+    FKDirector INT,
+    FOREIGN KEY (FKDirector) REFERENCES Director(Id)
+);
+GO
+SELECT 
+    m.Id AS MovieId,
+    m.Name AS MovieName,
+    m.ReleaseYear,
+    m.Gender,
+    m.Duration,
+    d.Id AS DirectorId,
+    d.Name AS DirectorName,
+    d.Nationality,
+    d.Age,
+    d.Active
+FROM 
+    Movies m
+INNER JOIN 
+    Director d
+ON 
+    m.FKDirector = d.Id;
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Características
 
-## Running unit tests
+- Visualización de una lista de películas.
+- Interfaz de usuario con Angular Material.
+- Consumo de datos desde una API externa.
+- Manejo de errores y visualización de mensajes.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Instalación
 
-## Running end-to-end tests
+Para ejecutar este proyecto en tu entorno local, sigue estos pasos:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. **Clona el repositorio:**
+   git clone https://github.com/JesusMorquecho/prueba-tecnica-frontend.git
+2. Navega al directorio del proyecto
+3. Instala las dependencias: con npm install
+4. Configura el entorno:
+Asegúrate de que la API esté corriendo en http://localhost:5013/api/o ajusta la URL en el servicio MoviesService si es necesario.
+5. Ejecuta la aplicación con ng serve
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+asegurarse que este corriendo el backend: https://github.com/JesusMorquecho/APIPruebaTecnica.git
